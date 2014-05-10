@@ -15,7 +15,7 @@ var bcrypt = require('bcrypt');
 // Database stuff
 var dbURL = 'mongodb://localhost';
 mongoose.connect(dbURL);
-var users = require('./models/User');
+var users = require('./models/user');
 
 var app = express();
 

@@ -34,18 +34,29 @@ router.get('/', function (req, res) {
 
 router.route('/user/new')
 	.post(function (req, res) {
-		expectedHeaders = ['firstname', 'lastname', 'username', 'email', 'picture'];
+		expectedHeaders = ['firstname', 'lastname', 'username', 'email', 'picture', 'phone'];
 		if (!checkHeaders(expectedHeaders, req.body)) {
 			res.send(400);
 		}
 		// CHECK API KEY HERE
-		// Isolating request parameters
-		var uname = req.body.username;
-		var password = req.body.password;
-		var firstname = req.body.firstname;
-		var lastname = req.body.lastname;
-		var email = req.body.email;
-		var picture = req.body.picture;
+		// Saving the new information in the database
+		var newUser = new users({
+			firstname: req.body.firstname,
+			lastname: req.body.lastname,
+			password: req.body.password,
+			phone: req.body.phone,
+			email: req.body.email,
+			picture: req.body.picture,
+			username: req.body.username
+		})
+		// saving the user to the database
+		newUser.save(function (err) {
+			if (err) {
+				res.send(409);
+			} else {
+				res.send(newUser);
+			}
+		});
 	});
 
 router.route('/user/login')

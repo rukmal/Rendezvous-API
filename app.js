@@ -29,7 +29,7 @@ app.use(methodOverride());
 var router = express.Router();
 
 router.get('/', function (req, res) {
-	res.send('Welcome to the Rendezvous API.', 200);
+	res.send('Welcome to the Rendezvous API.');
 });
 
 router.route('/user/new')

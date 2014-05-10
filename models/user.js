@@ -9,12 +9,12 @@ var bcrypt = require('bcrypt');
 var SALT_WORK_FACTOR = 10;
 
 var userSchema = new mongoose.Schema({
-	firstName: {
+	firstname: {
 		type: String,
 		required: true
 	},
 
-	lastName: {
+	lastname: {
 		type: String,
 		required: true
 	},
@@ -28,6 +28,11 @@ var userSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 		unique: true
+	},
+
+	phone: {
+		type: Number,
+		required: true
 	},
 
 	email: {

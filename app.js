@@ -29,15 +29,32 @@ app.use(methodOverride());
 var router = express.Router();
 
 router.get('/', function (req, res) {
-	res.send('Welcome to the ProjectX API.', 200);
+	res.send('Welcome to the Rendezvous API.', 200);
 });
 
-router.route('/user/login')
-	.post(function (req, res, next) {
-		expectedHeaders = ['username', 'password'];
+router.route('/user/new')
+	.post(function (req, res) {
+		expectedHeaders = ['firstname', 'lastname', 'username', 'email', 'picture'];
 		if (!checkHeaders(expectedHeaders, req.body)) {
 			res.send(400);
 		}
+		// CHECK API KEY HERE
+		// Isolating request parameters
+		var uname = req.body.username;
+		var password = req.body.password;
+		var firstname = req.body.firstname;
+		var lastname = req.body.lastname;
+		var email = req.body.email;
+		var picture = req.body.picture;
+	});
+
+router.route('/user/login')
+	.post(function (req, res, next) {
+		expectedHeaders = ['username', 'password', 'key'];
+		if (!checkHeaders(expectedHeaders, req.body)) {
+			res.send(400);
+		}
+		// CHECK API KEY HERE
 		// Isolating request parameters
 		var uname = req.body.username;
 		var password = req.body.password;
@@ -76,6 +93,6 @@ function checkHeaders (expected, actual) {
 }
 
 app.use('/', router)
-var port = process.env.port || 3000;
+var port = process.env.port || 80;
 app.listen(port);
 console.log('Express server listening on port ' + port);

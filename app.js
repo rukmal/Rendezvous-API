@@ -6,6 +6,12 @@
 var express = require('express');
 var http = require('http');
 var path = require('path');
+var mongoose = require('mongoose');
+
+// Database stuff
+var dbURL = 'mongodb://localhost';
+var user = require('./models/user');
+db = mongoose.connect(dbURL);
 
 var app = express();
 
@@ -27,7 +33,9 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-require('./routes')(app);
+app.get('/', function (req, res) {
+	res.send('hello world', 200);
+});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

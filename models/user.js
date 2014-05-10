@@ -5,6 +5,7 @@
  */
 
 var mongoose = require('mongoose');
+var bcrypt = require('bcrypt');
 
 var userSchema = new mongoose.Schema({
 	firstName: {
@@ -43,5 +44,24 @@ var userSchema = new mongoose.Schema({
 		type: Boolean,
 		required: true,
 		default: false
+	},
+
+	friends: {
+		type: Array,
+		required: true,
+		default: []
+	},
+
+	currentStatusID: {
+		type: String,
+		required: false
+	},
+
+	pastStatuses: {
+		type: Array,
+		required: true,
+		default: []
 	}
 });
+
+mongoose.exports = mongoose.model('User', userSchema);

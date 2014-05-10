@@ -6,6 +6,7 @@
 
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
+var SALT_WORK_FACTOR = 10;
 
 var userSchema = new mongoose.Schema({
 	firstName: {
@@ -23,7 +24,7 @@ var userSchema = new mongoose.Schema({
 		required: true
 	},
 
-	userID: {
+	username: {
 		type: String,
 		required: true,
 		unique: true
@@ -64,4 +65,20 @@ var userSchema = new mongoose.Schema({
 	}
 });
 
-mongoose.exports = mongoose.model('User', userSchema);
+userSchema.pre('save', function (next) {
+	var user = this;
+	// If the password isn't modified, save as is
+	if (!user.isModified('password')) return next;
+	bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
+		if (err) console.log('ERR: Salt generation error ' + err);
+		// hash and save the password using the salt
+		bcrypt.hash(user.password, salt, function (err, hash) {
+			if (err) console.log('ERR: Hashing password error ' + err);
+			// overriding password
+			user.password = hash;
+			next();
+		});
+	});
+});
+
+module.exports = mongoose.model('User', userSchema);

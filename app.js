@@ -6,37 +6,76 @@
 var express = require('express');
 var http = require('http');
 var path = require('path');
+var bodyParser = require('body-parser');
+var logger = require('morgan');
+var methodOverride = require('method-override');
 var mongoose = require('mongoose');
+var bcrypt = require('bcrypt');
 
 // Database stuff
 var dbURL = 'mongodb://localhost';
-var user = require('./models/user');
-db = mongoose.connect(dbURL);
+mongoose.connect(dbURL);
+var users = require('./models/User');
 
 var app = express();
 
 // all environments
-app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-app.use(express.favicon());
-app.use(express.logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded());
-app.use(express.bodyParser());
-app.use(express.methodOverride());
-app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(logger('dev'));
+app.use(bodyParser());
+app.use(methodOverride());
 
-// development only
-if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+var router = express.Router();
+
+router.get('/', function (req, res) {
+	res.send('Welcome to the ProjectX API.', 200);
+});
+
+router.route('/user/login')
+	.post(function (req, res, next) {
+		expectedHeaders = ['username', 'password'];
+		if (!checkHeaders(expectedHeaders, req.body)) {
+			res.send(400);
+		}
+		// Isolating request parameters
+		var uname = req.body.username;
+		var password = req.body.password;
+		// Searching database
+		users.findOne({ 'username': uname }, function (err, user) {
+			if (err) console.log('ERR: Error searching for user ' + err);
+			if (user) {
+				// Comparing passwords
+				bcrypt.compare(password, user.password, function (err, result) {
+					if (err) console.log('ERR: Error comparing passwords ' + err);
+					if (result) {
+						res.send(user);
+					} else {
+						res.send(401);
+					}
+				});
+			} else {
+				res.send(204);
+			}
+		});
+	});
+
+/**
+ * Function to check the validity of request headers
+ * @param  {Array} expected Array ofexpected headers
+ * @param  {JSON} actual    JSON object of actual request headers and results
+ * @return {Boolean}        True if valid, false if invalid
+ */
+function checkHeaders (expected, actual) {
+	for (header in actual) {
+		if (expected.indexOf(header) === -1) {
+			return false;
+		}
+	}
+	return true;
 }
 
-app.get('/', function (req, res) {
-	res.send('hello world', 200);
-});
-
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
-});
+app.use('/', router)
+var port = process.env.port || 3000;
+app.listen(port);
+console.log('Express server listening on port ' + port);

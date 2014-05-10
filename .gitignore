@@ -3,3 +3,9 @@
 
 # Ignoring node modules
 node_modules
+
+# Ignoring npm log
+npm_debug.log
+
+# Ignoring the wiki
+wiki

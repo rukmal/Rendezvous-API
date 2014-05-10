@@ -11,11 +11,13 @@ var logger = require('morgan');
 var methodOverride = require('method-override');
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
+var client = require('twilio')('AC6bcdd4b4386163cef2fa8141b6330bf2', '3f5cedbfd376649646600b8548ed0014');
 
 // Database stuff
 var dbURL = 'mongodb://localhost';
 mongoose.connect(dbURL);
 var users = require('./models/user');
+var userhold = require('./models/userhold');
 
 var app = express();
 
@@ -32,35 +34,37 @@ router.get('/', function (req, res) {
 	res.send('Welcome to the Rendezvous API.');
 });
 
-router.route('/user')
-	.post(function (req, res, next) {
+router.route('/user/new/')
+	.post(function (req, res) {
 		expectedHeaders = ['firstname', 'lastname', 'username', 'email', 'picture', 'phone'];
 		if (!checkHeaders(expectedHeaders, req.body)) {
 			res.send(400);
 		}
 		// CHECK API KEY HERE
 		// Saving the new information in the database
-		var newUser = new users({
+		var newUser = new userhold({
 			firstname: req.body.firstname,
 			lastname: req.body.lastname,
 			password: req.body.password,
 			phone: req.body.phone,
 			email: req.body.email,
 			picture: req.body.picture,
-			username: req.body.username
+			username: req.body.username,
+			authCode: generateCode()
 		})
 		// saving the user to the database
 		newUser.save(function (err) {
 			if (err) {
 				res.send(409);
 			} else {
-				res.send(newUser);
+				sendText(newUser.phone, newUser.authCode));
+				res.send(200);
 			}
 		});
 	});
 
 router.route('/user/login')
-	.post(function (req, res, next) {
+	.post(function (req, res) {
 		expectedHeaders = ['username', 'password', 'key'];
 		if (!checkHeaders(expectedHeaders, req.body)) {
 			res.send(400);
@@ -102,6 +106,40 @@ function checkHeaders (expected, actual) {
 		}
 	}
 	return true;
+}
+
+/**
+ * Function to generate a random code to be texted to the user
+ * @return {Number} Four digit code to be verified
+ */
+function generateCode () {
+	var length = 4;
+	var random = Math.random();
+	var code = random * Math.pow(10, length);
+	return Math.round(code);
+}
+
+/**
+ * Function to send a text message with a verification code to the user.
+ * @param  {Number} toNumber Phone number that the text is to be sent to
+ * @param  {Number} code     Random code to be used by the user to authenticate
+ */
+function sendText (toNumber, code) {
+	// Your accountSid and authToken from twilio.com/user/account
+	var accountSid = 'AC6bcdd4b4386163cef2fa8141b6330bf2';
+	var authToken = '3f5cedbfd376649646600b8548ed0014';
+	var fromNumber = '3609306560';
+	var client = require('twilio')(accountSid, authToken);
+	 
+	client.messages.create({
+	    body: 'Welcome to Rendezvous! Your verification code is ' + code + '.',
+	    to: toNumber,
+	    from: fromNumber
+	}, function(err, message) {
+		if (err) {
+			console.log(err);
+		}
+	});
 }
 
 app.use('/', router)

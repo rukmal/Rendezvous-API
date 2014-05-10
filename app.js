@@ -132,9 +132,9 @@ function sendText (toNumber, code) {
 	var client = require('twilio')(accountSid, authToken);
 	 
 	client.messages.create({
-	    body: 'Welcome to Rendezvous! Your verification code is ' + code + '.',
-	    to: toNumber,
-	    from: fromNumber
+		body: 'Welcome to Rendezvous! Your verification code is ' + code + '.',
+		to: toNumber,
+		from: fromNumber
 	}, function(err, message) {
 		if (err) {
 			console.log(err);

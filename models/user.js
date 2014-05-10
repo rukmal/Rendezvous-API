@@ -54,7 +54,7 @@ var userSchema = new mongoose.Schema({
 
 	friends: {
 		type: Array,
-		required: true,
+		required: false,
 		default: []
 	},
 
@@ -65,7 +65,7 @@ var userSchema = new mongoose.Schema({
 
 	pastStatuses: {
 		type: Array,
-		required: true,
+		required: false,
 		default: []
 	}
 });

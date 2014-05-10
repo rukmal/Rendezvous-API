@@ -9,3 +9,6 @@ npm_debug.log
 
 # Ignoring the wiki
 wiki
+
+# Ignoring test data
+test_data

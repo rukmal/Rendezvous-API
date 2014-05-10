@@ -32,8 +32,8 @@ router.get('/', function (req, res) {
 	res.send('Welcome to the Rendezvous API.');
 });
 
-router.route('/user/new')
-	.post(function (req, res) {
+router.route('/user')
+	.post(function (req, res, next) {
 		expectedHeaders = ['firstname', 'lastname', 'username', 'email', 'picture', 'phone'];
 		if (!checkHeaders(expectedHeaders, req.body)) {
 			res.send(400);
@@ -83,6 +83,7 @@ router.route('/user/login')
 					}
 				});
 			} else {
+				delete req.body
 				res.send(204);
 			}
 		});
@@ -95,8 +96,8 @@ router.route('/user/login')
  * @return {Boolean}        True if valid, false if invalid
  */
 function checkHeaders (expected, actual) {
-	for (header in actual) {
-		if (expected.indexOf(header) === -1) {
+	for (header in expected) {
+		if (!(expected[header] in actual)) {
 			return false;
 		}
 	}

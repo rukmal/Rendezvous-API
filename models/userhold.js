@@ -47,29 +47,6 @@ var userHoldSchema = new mongoose.Schema({
 		required: false
 	},
 
-	account_status: {
-		type: Boolean,
-		required: true,
-		default: false
-	},
-
-	friends: {
-		type: Array,
-		required: false,
-		default: []
-	},
-
-	currentStatusID: {
-		type: String,
-		required: false
-	},
-
-	pastStatuses: {
-		type: Array,
-		required: false,
-		default: []
-	},
-
 	authCode: {
 		type: Number,
 		required: true,

@@ -41,7 +41,7 @@ router.route('/user/new/')
 			res.send(400);
 		}
 		// CHECK API KEY HERE
-		// Saving the new information in the database
+		// Saving the new information in the migration database
 		var newUser = new userhold({
 			firstname: req.body.firstname,
 			lastname: req.body.lastname,
@@ -57,10 +57,19 @@ router.route('/user/new/')
 			if (err) {
 				res.send(409);
 			} else {
-				sendText(newUser.phone, newUser.authCode));
+				sendText(newUser.phone, newUser.authCode);
 				res.send(200);
 			}
 		});
+	})
+
+	// Moving user info from the temporary database to the actual one
+	.put(function (req, res) {
+		expectedHeaders = ['username', 'code'];
+		if (!checkHeaders(expectedHeaders, req.body)) {
+			res.send(400);
+		}
+		// CHECK API KEY HERE
 	});
 
 router.route('/user/login')

@@ -223,6 +223,47 @@
 </ul></td>
 <td align="left">API key</td>
 </tr>
+<tr>
+<td align="left"><code>/user/login/encrypted</code></td>
+<td align="center">POST</td>
+<td align="left"><ul>
+<li>
+<code>username</code> Username of the user to be logged on</li>
+<li>
+<code>encrypted_password</code> Encrypted password of the user to be logged on</li>
+</ul></td>
+<td align="left"><ul>
+<li>
+<code>200</code> All OK. Returns user object</li>
+<li>
+<code>204</code> No user found for the corresponding username</li>
+<li>
+<code>400</code> Invalid request</li>
+<li>
+<code>401</code> Unauthorized. Valid username, invalid password</li>
+</ul></td>
+<td align="left"><ul>
+<li>
+<code>firstname</code> First name of the user</li>
+<li>
+<code>lastname</code> Last name of the user</li>
+<li>
+<code>facebook_id</code> Facebook ID of the user (only appears if the user initially authenticated with Facebook)</li>
+<li>
+<code>password</code> Hashed password (for local authentication)</li>
+<li>
+<code>username</code> Username of the user</li>
+<li>
+<code>phone</code> Phone number of the user</li>
+<li>
+<code>picture</code> URL of the user picture</li>
+<li>
+<code>friends</code> Friend's user object of the current user</li>
+<li>
+<code>current_status</code> Current status of the user</li>
+</ul></td>
+<td align="left">API key</td>
+</tr>
 </tbody>
 </table><h2>
 <a name="status-endpoint" class="anchor" href="#status-endpoint"><span class="octicon octicon-link"></span></a><code>/status</code> Endpoint</h2>

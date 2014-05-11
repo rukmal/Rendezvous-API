@@ -237,7 +237,7 @@
 <th align="left">Security</th>
 </tr></thead>
 <tbody><tr>
-<td align="left"><code>/status/new</code></td>
+<td align="left"><code>/status/new/</code></td>
 <td align="center">POST</td>
 <td align="left"><ul>
 <li>
@@ -249,7 +249,7 @@
 <li>
 <code>location_lon</code> Longitudinal location of the person at the time the post was made</li>
 <li>
-<code>expiration_time</code> Expiration time of the post (OPTIONAL). If not set, this value falls back to the default</li>
+<code>expiration_time</code> Expiration time of the post (OPTIONAL). If not set, this value falls back to the default. This must be sent in milliseconds</li>
 </ul></td>
 <td align="left"><ul>
 <li>
@@ -268,7 +268,7 @@
 <li>
 <code>location_lon</code> Longitude of the user when the statuswas created</li>
 <li>
-<code>expiration_time</code> Expiration time of the status</li>
+<code>expiration_time</code> Expiration time of the status (JS date object)</li>
 </ul></td>
 <td align="left">API key</td>
 </tr></tbody>

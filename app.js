@@ -31,7 +31,7 @@ app.use(methodOverride());
 var router = express.Router();
 
 router.get('/', function (req, res) {
-	res.send('Welcome to the Rendezvous API.');
+	res.redirect('http://rukmal.github.io/Rendezvous-API/');
 });
 
 router.route('/user/new/')

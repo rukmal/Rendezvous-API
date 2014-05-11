@@ -69,7 +69,28 @@ router.route('/user/new/')
 		if (!checkHeaders(expectedHeaders, req.body)) {
 			res.send(400);
 		}
-		// CHECK API KEY HERE
+		// CHECK API KEY HEREf
+		userhold.findOne({ username: req.body.username }, function (err, tempUser) {
+			if (err) console.log('ERR: Error searching for user ' + err);
+			if (tempUser.authCode === req.body.code) {
+				if (tempUser) {
+					delete tempUser[authCode];
+					var permanentUser = new users(tempUser);
+					permanentUser.save(function (error) {
+						if (err) {
+							res.send(409);
+						} else {
+							res.send(permanentUser);
+						}
+					});
+				} else {
+					delete req.body;
+					res.send(204);
+				}
+			} else {
+				res.send(401);
+			}
+		});
 	});
 
 router.route('/user/login')
@@ -96,7 +117,7 @@ router.route('/user/login')
 					}
 				});
 			} else {
-				delete req.body
+				delete req.body;
 				res.send(204);
 			}
 		});

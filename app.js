@@ -50,7 +50,7 @@ router.route('/user/new/')
 			password: req.body.password,
 			phone: Number(req.body.phone),
 			picture: req.body.picture,
-			username: req.body.username,
+			username: req.body.username.toLowerCase(),
 			authCode: generateCode()
 		});
 		if (req.body.facebook_id) {
@@ -74,7 +74,7 @@ router.route('/user/new/')
 			res.send(makeStatusObject(400));
 		}
 		// CHECK API KEY HEREf
-		userhold.findOne({ username: req.body.username }, function (err, tempUser) {
+		userhold.findOne({ username: req.body.username.toLowerCase() }, function (err, tempUser) {
 			if (err) console.log('ERR: Error searching for user ' + err);
 			// Comparing auth codes
 			if (tempUser.authCode === Number(req.body.code)) {
@@ -108,7 +108,7 @@ router.get('/user/exists/:username', function (req, res) {
 	if (req.params.username === null) {
 		res.send(makeStatusObject(400));
 	}
-	var candidateUser = req.params.username;
+	var candidateUser = req.params.username.toLowerCase();
 	userhold.find({ username: candidateUser }, function (err, useres) {
 		if (err) console.log('ERR: Error searching for user based on username ' + err);
 		var output = {};
@@ -144,7 +144,7 @@ router.route('/user/login')
 		}
 		// CHECK API KEY HERE
 		// Isolating request parameters
-		var uname = req.body.username;
+		var uname = req.body.username.toLowerCase();
 		var password = req.body.password;
 		// Searching database
 		userhold.findOne({ 'username': uname }, function (err, user) {

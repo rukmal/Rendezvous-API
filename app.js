@@ -56,6 +56,7 @@ router.route('/user/new/')
 		if (req.body.facebook_id) {
 			newUser.facebook_id = req.body.facebook_id;
 		}
+		console.log(newUser);
 		// saving the user to the database
 		newUser.save(function (err) {
 			console.log('ERR: Error saving the new user ' + err);
@@ -170,6 +171,39 @@ router.route('/user/login')
 				res.send(makeStatusObject(204));
 			}
 		});
+	});
+
+router.route('/user/find_friends')
+	.post(function (req, res) {
+		var expectedHeaders = ['number_list', 'username'];
+		if (!checkHeaders(expectedHeaders, req.body)) {
+			res.send(makeStatusObject(400));
+		}
+		var output = {};
+		output.results = [];
+		var numbers = req.body.number_list;
+		users.findOne({ username: req.body.username }, function (err, user) {
+			if (!user) {
+				res.send(makeStatusObject(204));
+			}
+		});
+		for (var number in numbers) {
+			users.findOne({ phone: numbers[number] }, function (err, number){
+				if (err) console.log('ERR: Error looking for user by phone number ' + err);
+				if (err) {
+					res.send(makeStatusObject(500));
+				} else {
+					delete user.password;
+					delete user.friends;
+					delete user.account_status;
+					delete user.currentStatusID;
+					delete user.pastStatuses;
+					delete user.phone;
+					output.results.push(user);
+				}
+			})
+		}
+		res.send(output);
 	});
 
 router.route('/user/login/ecrypted')

@@ -206,7 +206,7 @@ router.route('/user/find_friends')
 		res.send(output);
 	});
 
-router.route('/user/login/ecrypted')
+router.route('/user/login/encrypted')
 	.post(function (req, res) {
 		expectedHeaders = ['username', 'encrypted_password'];
 		if (!checkHeaders(expectedHeaders, req.body)) {

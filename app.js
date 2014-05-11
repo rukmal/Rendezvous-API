@@ -11,7 +11,6 @@ var logger = require('morgan');
 var methodOverride = require('method-override');
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
-var SALT_WORK_FACTOR = 10;
 var client = require('twilio')('AC6bcdd4b4386163cef2fa8141b6330bf2', '3f5cedbfd376649646600b8548ed0014');
 
 // Database stuff
@@ -19,6 +18,10 @@ var dbURL = 'mongodb://localhost';
 mongoose.connect(dbURL);
 var users = require('./models/user');
 var userhold = require('./models/userhold');
+var status = require('./models/status');
+
+// Other data-related variables
+var defaultOffset = 600000; // ms (equal to 10 minutes)
 
 var app = express();
 

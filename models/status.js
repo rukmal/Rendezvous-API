@@ -6,16 +6,39 @@
 
 var mongoose = require('mongoose');
 
-var statusSchema = new mognoose.Schmea({
+var statusSchema = new mongoose.Schema({
 	time: {
 		type: Date,
 		required: true,
-		default: Date.now();
+		default: Date.now
 	},
 
-	uniqueID: {
+	type: {
 		type: String,
+		required: true
+	},
+
+	location_lat: {
+		type: Number,
+		required: true
+	},
+
+	location_lon: {
+		type: Number,
+		required: true
+	},
+
+	expiration_time: {
+		type: Date,
 		required: true,
-		// default: 
+		default: Date.now // <-- Figure out a way to appenddate offset to this
+	},
+
+	isExpired: {
+		type: Boolean,
+		required: true,
+		default: false
 	}
-})
+});
+
+module.exports = mongoose.model('Status', statusSchema);

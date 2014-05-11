@@ -1,43 +1,33 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
     <title>Rendezvous API by rukmal</title>
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/respond.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <!--[if lt IE 8]>
-    <link rel="stylesheet" href="stylesheets/ie.css">
-    <![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
   </head>
+
   <body>
-      <div id="header">
-        <nav>
-          <li class="fork"><a href="https://github.com/rukmal/Rendezvous-API">View On GitHub</a></li>
-          <li class="downloads"><a href="https://github.com/rukmal/Rendezvous-API/zipball/master">ZIP</a></li>
-          <li class="downloads"><a href="https://github.com/rukmal/Rendezvous-API/tarball/master">TAR</a></li>
-          <li class="title">DOWNLOADS</li>
-        </nav>
-      </div><!-- end header -->
 
-    <div class="wrapper">
+    <header>
+      <div class="container">
+        <h1>Rendezvous API</h1>
+        <h2>The awesome API behind the even better Rendezvous.</h2>
 
-      <section>
-        <div id="title">
-          <h1>Rendezvous API</h1>
-          <p>The awesome API behind the even better Rendezvous.</p>
-          <hr>
-          <span class="credits left">Project maintained by <a href="https://github.com/rukmal">rukmal</a></span>
-          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
-        </div>
+        <section id="downloads">
+          <a href="https://github.com/rukmal/Rendezvous-API/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/rukmal/Rendezvous-API/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/rukmal/Rendezvous-API" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
 
+    <div class="container">
+      <section id="main_content">
         <h1>
 <a name="rendezvous-api-endpoints" class="anchor" href="#rendezvous-api-endpoints"><span class="octicon octicon-link"></span></a><a href="http://getrendezvous.co">Rendezvous</a> API Endpoints</h1>
 
@@ -77,6 +67,8 @@
 <code>firstname</code> First name of the new user</li>
 <li>
 <code>lastname</code> Last name of the new user</li>
+<li>
+<code>facebook_id</code> Facebook ID of the user (if logging in with Facebook) [optional]</li>
 <li>
 <code>picture</code> URL to user picture. Can be blank, but the header is required</li>
 <li>
@@ -121,6 +113,8 @@
 <li>
 <code>lastname</code> Last name of the user</li>
 <li>
+<code>facebook_id</code> Facebook ID of the user (only appears if the user initially authenticated with Facebook)</li>
+<li>
 <code>password</code> Hashed password (for local authentication)</li>
 <li>
 <code>username</code> Username of the user</li>
@@ -136,14 +130,53 @@
 <td align="left">API key</td>
 </tr>
 <tr>
-<td align="left"><code>/user/exists</code></td>
+<td align="left"><code>/user/exists/</code></td>
 <td align="center">GET</td>
 <td align="left"><ul><li>
 <code>username</code> Username to be checked for availability</li></ul></td>
-<td align="left"><ul><li>
-<code>200</code> All OK. Username is available.</li></ul></td>
+<td align="left"><ul>
+<li>
+<code>200</code> All OK. Request succcessful</li>
+<li>
+<code>400</code> Invalid request</li>
+</ul></td>
 <td align="left"><ul><li>
 <code>availability</code> Boolean value. True if available, false if not</li></ul></td>
+<td align="left">API key</td>
+</tr>
+<tr>
+<td align="left"><code>/user/exists/fb/</code></td>
+<td align="center">GET</td>
+<td align="left"><ul><li>
+<code>facebook_id</code> Facebook ID of the person to be serached for in the database</li></ul></td>
+<td align="left"><ul>
+<li>
+<code>200</code> All OK. Returns the user object of the corresponding person (if it exists)</li>
+<li>
+<code>204</code> No user found for the corresponding ID</li>
+<li>
+<code>400</code> Invalid request</li>
+</ul></td>
+<td align="left"><ul>
+<li>
+<code>firstname</code> First name of the user</li>
+<li>
+<code>lastname</code> Last name of the user</li>
+<li>
+<code>facebook_id</code> Facebook ID of the user (only appears if they registered with it)</li>
+<li>
+<code>password</code> Hashed password (for local authentication)</li>
+<li>
+<code>username</code> Username of the user</li>
+<li>
+<code>phone</code> Phone number of the user</li>
+<li>
+<code>picture</code> URL of the user picture</li>
+<li>
+<code>friends</code> Friend's user object of the current user</li>
+<li>
+<code>current_status</code> Current status of the user</li>
+</ul></td>
 <td align="left">API key</td>
 </tr>
 <tr>
@@ -170,6 +203,8 @@
 <code>firstname</code> First name of the user</li>
 <li>
 <code>lastname</code> Last name of the user</li>
+<li>
+<code>facebook_id</code> Facebook ID of the user (only appears if they registered with it)</li>
 <li>
 <code>password</code> Hashed password (for local authentication)</li>
 <li>
@@ -199,9 +234,8 @@
 <li>Prompt the user to enter the confirmation code sent via text, and send a PUT request to <code>/user/new/</code> with the required headers. This process will authenticate the confirmation code and add the new user to the database.</li>
 </ul>
       </section>
-
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
     
   </body>
 </html>

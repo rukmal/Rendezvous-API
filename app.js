@@ -36,6 +36,7 @@ router.get('/', function (req, res) {
 
 router.route('/user/new/')
 	.post(function (req, res) {
+		console.log(req.body);
 		expectedHeaders = ['firstname', 'lastname', 'username', 'email', 'picture', 'phone'];
 		if (!checkHeaders(expectedHeaders, req.body)) {
 			res.send(400);
@@ -72,9 +73,11 @@ router.route('/user/new/')
 		// CHECK API KEY HEREf
 		userhold.findOne({ username: req.body.username }, function (err, tempUser) {
 			if (err) console.log('ERR: Error searching for user ' + err);
-			if (tempUser.authCode === req.body.code) {
+			// Comparing auth codes
+			if (tempUser.authCode === Number(req.body.code)) {
 				if (tempUser) {
-					delete tempUser[authCode];
+					delete tempUser.authCode;
+					// Moving the user from one database to the other
 					var permanentUser = new users(tempUser);
 					permanentUser.save(function (error) {
 						if (err) {

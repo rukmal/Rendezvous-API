@@ -24,4 +24,4 @@ Base URL: http://api.getrendezvous.co/
 Due to the nature of the two step verification process of adding a new user, two seperate requests must be made. The following steps must be followed:
 
 - Send a POST request to the ```/user/new/``` endpoint with the required headers. This will then send a verification text message to the user.
-- Prompt the user to enter the confirmation code sent via text, and send a PUT request to ```/user/new``` with the required headers. This process will authenticate the confirmation code and add the new user to the database.
+- Prompt the user to enter the confirmation code sent via text, and send a PUT request to ```/user/new/``` with the required headers. This process will authenticate the confirmation code and add the new user to the database.

@@ -51,10 +51,12 @@ router.route('/user/new/')
 			phone: Number(req.body.phone),
 			picture: req.body.picture,
 			username: req.body.username.toLowerCase(),
-			authCode: generateCode()
+			authCode: generateCode(),
 		});
 		if (req.body.facebook_id) {
 			newUser.facebook_id = req.body.facebook_id;
+		} else {
+			newUser.facebook_id = newUser.username.toLowerCase();
 		}
 		console.log(newUser);
 		// saving the user to the database

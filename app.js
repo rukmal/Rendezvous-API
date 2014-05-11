@@ -37,7 +37,7 @@ router.get('/', function (req, res) {
 router.route('/user/new/')
 	.post(function (req, res) {
 		console.log(req.body);
-		expectedHeaders = ['firstname', 'lastname', 'username', 'email', 'picture', 'phone'];
+		expectedHeaders = ['firstname', 'lastname', 'username', 'picture', 'phone'];
 		if (!checkHeaders(expectedHeaders, req.body)) {
 			res.send(makeStatusObject(400));
 		}
@@ -48,13 +48,13 @@ router.route('/user/new/')
 			lastname: req.body.lastname,
 			password: req.body.password,
 			phone: Number(req.body.phone),
-			email: req.body.email,
 			picture: req.body.picture,
 			username: req.body.username,
 			authCode: generateCode()
 		})
 		// saving the user to the database
 		newUser.save(function (err) {
+			console.log(err);
 			if (err) {
 				res.send(makeStatusObject(409));
 			} else {
@@ -63,7 +63,6 @@ router.route('/user/new/')
 			}
 		});
 	})
-
 	// Moving user info from the temporary database to the actual one
 	.put(function (req, res) {
 		expectedHeaders = ['username', 'code'];
@@ -80,7 +79,8 @@ router.route('/user/new/')
 					// Moving the user from one database to the other
 					var permanentUser = new users(tempUser);
 					permanentUser.save(function (error) {
-						if (err) {
+						console.log(error);
+						if (error) {
 							res.send(makeStatusObject(409));
 						} else {
 							res.send(permanentUser);
@@ -96,11 +96,29 @@ router.route('/user/new/')
 		});
 	});
 
+router.get('/user/exists/', function (req, res) {
+	var expectedHeaders = ['username'];
+	if (!checkHeaders(expectedHeaders, req.body)) {
+		res.send(makeStatusObject(400));
+	}
+	var candidateUser = req.body.username;
+	userhold.find({ username: candidateUser }, function (users, err) {
+		if (err) console.log(err);
+		var output = {};
+		if (users.length > 0) {
+			output['availability'] = false;
+		} else {
+			output['availability'] = true;
+		}
+		res.send(availability);
+	});
+});
+
 router.route('/user/login')
 	.post(function (req, res) {
 		expectedHeaders = ['username', 'password', 'key'];
 		if (!checkHeaders(expectedHeaders, req.body)) {
-			res.send(400);
+			res.send(makeStatusObject(400));
 		}
 		// CHECK API KEY HERE
 		// Isolating request parameters
@@ -184,6 +202,7 @@ function makeStatusObject(statusCode) {
 	var statusObject = {
 		status: statusCode
 	}
+	console.log('RESPONSE CODE: ' + statusCode);
 	return statusObject;
 }
 

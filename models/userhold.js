@@ -36,12 +36,6 @@ var userHoldSchema = new mongoose.Schema({
 		required: true
 	},
 
-	email: {
-		type: String,
-		required: true,
-		unique: true
-	},
-
 	picture: {
 		type: String,
 		required: false

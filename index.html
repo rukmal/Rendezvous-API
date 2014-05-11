@@ -350,7 +350,8 @@
 <th align="left">Response Object Headers</th>
 <th align="left">Security</th>
 </tr></thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td align="left"><code>/status/new/</code></td>
 <td align="center">POST</td>
 <td align="left"><ul>
@@ -385,9 +386,41 @@
 <code>expiration_time</code> Expiration time of the status (JS date object)</li>
 </ul></td>
 <td align="left">API key</td>
-</tr></tbody>
+</tr>
+<tr>
+<td align="left"><code>/status/friends/</code></td>
+<td align="center">POST</td>
+<td align="left"><ul><li>
+<code>username</code> Username of the user who's friends are to be retrieved</li></ul></td>
+<td align="left"><ul>
+<li>
+<code>200</code> All OK. Returns object correctly</li>
+<li>
+<code>204</code> No user found for the given username</li>
+<li>
+<code>400</code> Invalid request</li>
+</ul></td>
+<td align="left"><ul>
+<li>
+<code>statuses</code> Array of objects containing current status details</li>
+<li>
+<code>username</code> Username of the user who has a specific status</li>
+<li>
+<code>firstname</code> First name of the user with a specific status</li>
+<li>
+<code>lastname</code> Last name of the user who has a specific status</li>
+<li>
+<code>status_time</code> Time that the status was set</li>
+<li>
+<code>status_type</code> Type of the current status (i.e. Eat, Movie etc..)</li>
+<li>
+<code>status_expiration</code> Expiration time of the status</li>
+</ul></td>
+<td align="left">API key</td>
+</tr>
+</tbody>
 </table><h2>
-<a name="commonn-workflows" class="anchor" href="#commonn-workflows"><span class="octicon octicon-link"></span></a>Commonn Workflows</h2>
+<a name="common-workflows" class="anchor" href="#common-workflows"><span class="octicon octicon-link"></span></a>Common Workflows</h2>
 
 <h3>
 <a name="adding-a-new-user" class="anchor" href="#adding-a-new-user"><span class="octicon octicon-link"></span></a>Adding a new user</h3>

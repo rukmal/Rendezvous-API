@@ -326,22 +326,24 @@ router.route('/status/friends')
 				var output = {};
 				output.statuses = [];
 				for (friend in user.friends) {
-					users.findOne({ username: user.friends[friend] }, function (err, friend) {
-						if (err) console.log('ERR: Error searching for friend ' + err);
-						var friendStatus = {};
-						friendStatus.username = friend.username;
-						friendStatus.firstname = friend.firstname;
-						friendStatus.lastname = friend.lastname;
-						friendStatus.phone = friend.phone;
-						status.findOne({ _id: friend.currentStatusID }, function (err, friendStatus) {
-							if (friendStatus) {
-								friendStatus.status_time = friendStatus.time;
-								friendStatus.status_type = friendStatus.type;
-								friendStatus.status_expiration = friendStatus.expiration_time;
-								output.statuses.push(friendStatus);
-							}
+					if (user.friends[friend].username != undefined) {
+						users.findOne({ username: user.friends[friend].username }, function (err, friend) {
+							if (err) console.log('ERR: Error searching for friend ' + err);
+							var friendStatus = {};
+							friendStatus.username = friend.username;
+							friendStatus.firstname = friend.firstname;
+							friendStatus.lastname = friend.lastname;
+							friendStatus.phone = friend.phone;
+							status.findOne({ _id: friend.currentStatusID }, function (err, friendStatus) {
+								if (friendStatus) {
+									friendStatus.status_time = friendStatus.time;
+									friendStatus.status_type = friendStatus.type;
+									friendStatus.status_expiration = friendStatus.expiration_time;
+									output.statuses.push(friendStatus);
+								}
+							});
 						});
-					});
+					}
 				}
 				res.send(output);
 			}

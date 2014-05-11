@@ -32,13 +32,13 @@ var statusSchema = new mongoose.Schema({
 		required: true
 	},
 
-	isExpired: {
+	is_expired: {
 		type: Boolean,
 		required: true,
 		default: false
 	},
 
-	createdBy: {
+	created_by: {
 		type: String,
 		required: true
 	}

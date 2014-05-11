@@ -65,7 +65,8 @@ router.route('/user/new/')
 			if (err) {
 				res.send(makeStatusObject(409));
 			} else {
-				sendText(newUser.phone, newUser.authCode);
+				var body = 'Welcome to Rendezvous! Your verification code is ' + newUser.authCode + '.';
+				sendText(newUser.phone, body);
 				res.send(makeStatusObject(200));
 			}
 		});
@@ -234,6 +235,24 @@ router.route('/user/login/encrypted')
 		})
 	});
 
+router.route('/user/invite')
+	.post(function (req, res) {
+		var expectedHeaders = ['username', 'target_phone'];
+		if (!checkHeaders(expectedHeaders, req.body)) {
+			res.send(makeStatusObject(400));
+		}
+		users.findOne({ username: req.body.username }, function (err, user) {
+			if (err) console.log('ERR: Error searching for user ' + err);
+			if (!user) {
+				res.send(makeStatusObject(204));
+				return
+			} else {
+				sendText(req.body.target_phone, 'Your friend ' + user.firstname + ' ' + user.lastname + ' thought you should try Rendezvous. Get it at http://getrendezvous.co/!');
+			}
+		});
+		res.send(makeStatusObject(200));
+	});
+
 router.route('/status/new')
 	.post(function (req, res) {
 		expectedHeaders = ['username', 'type', 'location_lat', 'location_lon'];
@@ -320,7 +339,7 @@ function generateCode () {
  * @param  {Number} toNumber Phone number that the text is to be sent to
  * @param  {Number} code     Random code to be used by the user to authenticate
  */
-function sendText (toNumber, code) {
+function sendText (toNumber, body) {
 	// Your accountSid and authToken from twilio.com/user/account
 	var accountSid = 'AC6bcdd4b4386163cef2fa8141b6330bf2';
 	var authToken = '3f5cedbfd376649646600b8548ed0014';
@@ -328,7 +347,7 @@ function sendText (toNumber, code) {
 	var client = require('twilio')(accountSid, authToken);
 	 
 	client.messages.create({
-		body: 'Welcome to Rendezvous! Your verification code is ' + code + '.',
+		body: body,
 		to: toNumber,
 		from: fromNumber
 	}, function(err, message) {

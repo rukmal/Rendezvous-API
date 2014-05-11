@@ -47,7 +47,7 @@ router.route('/user/new/')
 			firstname: req.body.firstname,
 			lastname: req.body.lastname,
 			password: req.body.password,
-			phone: req.body.phone,
+			phone: Number(req.body.phone),
 			email: req.body.email,
 			picture: req.body.picture,
 			username: req.body.username,

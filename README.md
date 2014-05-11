@@ -4,7 +4,9 @@ This Wiki contains documentation for all Rendezvous REST API endpoints. All func
 
 Base URL: http://api.getrendezvous.co/
 
-**IMPORTANT: Most API calls require a valid API key. Contact system administrator for more information. API keys must be passed through with the header 'key', unless otherwise specified.**
+**IMPORTANT:**
+- **Most API calls require a valid API key. Contact system administrator for more information. API keys must be passed through with the header 'key', unless otherwise specified.**
+- **All status codes are returned as a JSON object with a key 'status'**
 
 *Note: For information about HTTP error codes, see the W3 guide [here](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html).*
 

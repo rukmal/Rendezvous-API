@@ -175,6 +175,11 @@ function sendText (toNumber, code) {
 	});
 }
 
+/**
+ * Function to generate a status code object
+ * @param  {Number} statusCode HTTP status code to be objectified
+ * @return {JSON}            JSON object with key 'status' containing the error code.
+ */
 function makeStatusObject(statusCode) {
 	var statusObject = {
 		status: statusCode

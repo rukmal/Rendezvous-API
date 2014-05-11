@@ -169,6 +169,31 @@ router.route('/user/login')
 		});
 	});
 
+router.route('/user/login/ecrypted')
+	.post(function (req, res) {
+		expectedHeaders = ['username', 'encrypted_password'];
+		if (!checkHeaders(expectedHeaders, req.body)) {
+			res.send(makeStatusObject(400));
+		}
+		// CHECK API KEY HERE
+		// Isolating request parameters
+		var candidateUser = req.body.username;
+		var encrypted_password = req.body.encrypted_password;
+		users.findOne({ username: candidateUser }, function (err, user) {
+			if (err) console.log('ERR: Error searching for user ' + err);
+			if (user) {
+				if (user.password === encrypted_password) {
+					res.send(user);
+				} else {
+					res.send(makeStatusObject(401));
+				}
+			} else {
+				delete req.body;
+				res.send(makeStatusObject(204));
+			}
+		})
+	});
+
 router.route('/status/new')
 	.post(function (req, res) {
 		expectedHeaders = ['username', 'type', 'location_lat', 'location_lon'];
@@ -184,13 +209,15 @@ router.route('/status/new')
 		} else {
 			offset = defaultOffset;
 		}
+		// ADD CHECKING BY USERNAME HERE
 		// Creating new mognoose object
 		var newStatus = new status({
 			time: new Date(),
 			type: req.body.type,
 			location_lat: req.body.lat,
 			location_lon: req.body.lon,
-			expirtaion_time: new Date(new Date().getTime() + defaultOffset)
+			expirtaion_time: new Date(new Date().getTime() + offset),
+			created_by: req.body.username
 		});
 
 		newStatus.save(function (err) {

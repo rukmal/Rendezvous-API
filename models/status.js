@@ -36,6 +36,11 @@ var statusSchema = new mongoose.Schema({
 		type: Boolean,
 		required: true,
 		default: false
+	},
+
+	createdBy: {
+		type: String,
+		required: true
 	}
 });
 

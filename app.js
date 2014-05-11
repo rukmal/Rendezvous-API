@@ -290,9 +290,9 @@ router.route('/status/new')
 		var newStatus = new status({
 			time: new Date(),
 			type: req.body.type,
-			location_lat: req.body.lat,
-			location_lon: req.body.lon,
-			expirtaion_time: new Date(new Date().getTime() + offset),
+			location_lat: req.body.location_lat,
+			location_lon: req.body.location_lon,
+			expiration_time: new Date(new Date().getTime() + offset),
 			created_by: req.body.username
 		});
 
@@ -304,6 +304,8 @@ router.route('/status/new')
 				res.send(newStatus);
 			}
 		});
+
+		console.log(newStatus._id);
 	});
 
 function getFriends (userObject, res) {

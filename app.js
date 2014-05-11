@@ -11,6 +11,7 @@ var logger = require('morgan');
 var methodOverride = require('method-override');
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
+var SALT_WORK_FACTOR = 10;
 var client = require('twilio')('AC6bcdd4b4386163cef2fa8141b6330bf2', '3f5cedbfd376649646600b8548ed0014');
 
 // Database stuff
@@ -137,7 +138,7 @@ router.get('/user/exists/fb/:fbid', function (req, res) {
 
 router.route('/user/login')
 	.post(function (req, res) {
-		expectedHeaders = ['username', 'password', 'key'];
+		expectedHeaders = ['username', 'password'];
 		if (!checkHeaders(expectedHeaders, req.body)) {
 			res.send(makeStatusObject(400));
 		}
@@ -146,18 +147,21 @@ router.route('/user/login')
 		var uname = req.body.username;
 		var password = req.body.password;
 		// Searching database
-		users.findOne({ 'username': uname }, function (err, user) {
+		userhold.findOne({ 'username': uname }, function (err, user) {
 			if (err) console.log('ERR: Error searching for user ' + err);
 			if (user) {
 				// Comparing passwords
 				bcrypt.compare(password, user.password, function (err, result) {
 					if (err) console.log('ERR: Error comparing passwords ' + err);
 					if (result) {
-						res.send(user);
+						users.findOne({ 'username': uname }, function (err, permauser) {
+							if (err) console.log('ERR: Error searching for permanenet user ' + err);
+							res.send(permauser);
+						});
 					} else {
 						res.send(makeStatusObject(401));
 					}
-				});
+				});			
 			} else {
 				delete req.body;
 				res.send(makeStatusObject(204));

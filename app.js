@@ -39,7 +39,7 @@ router.route('/user/new/')
 		console.log(req.body);
 		expectedHeaders = ['firstname', 'lastname', 'username', 'email', 'picture', 'phone'];
 		if (!checkHeaders(expectedHeaders, req.body)) {
-			res.send(400);
+			res.send(makeErrorObject(400));
 		}
 		// CHECK API KEY HERE
 		// Saving the new information in the migration database
@@ -56,10 +56,10 @@ router.route('/user/new/')
 		// saving the user to the database
 		newUser.save(function (err) {
 			if (err) {
-				res.send(409);
+				res.send(makeErrorObject(409));
 			} else {
 				sendText(newUser.phone, newUser.authCode);
-				res.send(200);
+				res.send(makeErrorObject(200));
 			}
 		});
 	})
@@ -68,7 +68,7 @@ router.route('/user/new/')
 	.put(function (req, res) {
 		expectedHeaders = ['username', 'code'];
 		if (!checkHeaders(expectedHeaders, req.body)) {
-			res.send(400);
+			res.send(makeErrorObject(400));
 		}
 		// CHECK API KEY HEREf
 		userhold.findOne({ username: req.body.username }, function (err, tempUser) {
@@ -81,17 +81,17 @@ router.route('/user/new/')
 					var permanentUser = new users(tempUser);
 					permanentUser.save(function (error) {
 						if (err) {
-							res.send(409);
+							res.send(makeErrorObject(409));
 						} else {
 							res.send(permanentUser);
 						}
 					});
 				} else {
 					delete req.body;
-					res.send(204);
+					res.send(makeErrorObject(204));
 				}
 			} else {
-				res.send(401);
+				res.send(makeErrorObject(401));
 			}
 		});
 	});
@@ -116,12 +116,12 @@ router.route('/user/login')
 					if (result) {
 						res.send(user);
 					} else {
-						res.send(401);
+						res.send(makeErrorObject(401));
 					}
 				});
 			} else {
 				delete req.body;
-				res.send(204);
+				res.send(makeErrorObject(204));
 			}
 		});
 	});
@@ -173,6 +173,13 @@ function sendText (toNumber, code) {
 			console.log(err);
 		}
 	});
+}
+
+function makeErrorObject(errorCode) {
+	var errorObject = {
+		error: errorCode
+	}
+	return errorObject;
 }
 
 app.use('/', router)

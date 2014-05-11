@@ -110,7 +110,7 @@ router.get('/user/exists/', function (req, res) {
 	}
 	var candidateUser = req.body.username;
 	userhold.find({ username: candidateUser }, function (users, err) {
-		if (err) console.log(err);
+		if (err) console.log('ERR: Error searching for user based on username ' + err);
 		var output = {};
 		if (users.length > 0) {
 			output['availability'] = false;
@@ -118,6 +118,22 @@ router.get('/user/exists/', function (req, res) {
 			output['availability'] = true;
 		}
 		res.send(availability);
+	});
+});
+
+router.get('/user/exists/fb', function (req, res) {
+	var expectedHeaders = ['facebook_id'];
+	if (!checkHeaders(expectedHeaders, req.body)) {
+		res.send(makeStatusObject(400));
+	}
+	// Searching the database
+	users.findOne({ facebook_id: req.body.facebook_id }, function (user, err) {
+		if (err) console.log('ERR: Error searching for user based on Facebook ID ' + err);
+		if (user) {
+			res.send(user);
+		} else {
+			res.send(makeStatusObject(204));
+		}
 	});
 });
 

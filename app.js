@@ -87,6 +87,7 @@ router.route('/user/new/')
 						if (error) {
 							res.send(makeStatusObject(409));
 						} else {
+							permanentUser.friends = getFriends(permanentUser.friends, res);
 							res.send(permanentUser);
 						}
 					});
@@ -129,6 +130,7 @@ router.get('/user/exists/fb/:fbid', function (req, res) {
 	users.findOne({ facebook_id: req.params.fbid }, function (err, user) {
 		if (err) console.log('ERR: Error searching for user based on Facebook ID ' + err);
 		if (user) {
+			user.friends = getFriends(user.friends, res);
 			res.send(user);
 		} else {
 			res.send(makeStatusObject(204));
@@ -156,6 +158,7 @@ router.route('/user/login')
 					if (result) {
 						users.findOne({ 'username': uname }, function (err, permauser) {
 							if (err) console.log('ERR: Error searching for permanenet user ' + err);
+							permauser.friends = getFriends(permauser.friends, res);
 							res.send(permauser);
 						});
 					} else {
@@ -183,6 +186,7 @@ router.route('/user/login/ecrypted')
 			if (err) console.log('ERR: Error searching for user ' + err);
 			if (user) {
 				if (user.password === encrypted_password) {
+					user.friends = getFriends(user.friends, res);
 					res.send(user);
 				} else {
 					res.send(makeStatusObject(401));
@@ -230,6 +234,21 @@ router.route('/status/new')
 		});
 	});
 
+function getFriends (userObject, res) {
+	var friends = []; // Array of friends object
+	for (var user in userObject.friends) {
+		user.findOne({ username: userObject.friends[user] }, function (err, friend) {
+			if (err) console.log('ERR: Error searching for friends ' + err);
+			if (err) {
+				res.send(makeStatusObject(500));
+			} else {
+				friends.push(user);
+			}
+		});
+	}
+	return friends;
+}
+
 /**
  * Function to check the validity of request headers
  * @param  {Array} expected Array ofexpected headers
@@ -237,7 +256,7 @@ router.route('/status/new')
  * @return {Boolean}        True if valid, false if invalid
  */
 function checkHeaders (expected, actual) {
-	for (header in expected) {
+	for (var header in expected) {
 		if (!(expected[header] in actual)) {
 			return false;
 		}
@@ -278,7 +297,7 @@ function sendText (toNumber, code) {
 		from: fromNumber
 	}, function(err, message) {
 		if (err) {
-			console.log(err);
+			console.log('ERR: Error sending text message ' + err);
 		}
 	});
 }

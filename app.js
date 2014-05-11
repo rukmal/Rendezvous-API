@@ -109,6 +109,23 @@ router.route('/user/new/')
 
 	});
 
+router.get('/user/picture/:username', function (req, res) {
+	if (!req.params.username) {
+		res.send(makeStatusObject(400));
+	}
+	var output = {};
+	users.findOne({ username: req.params.username }, function (err, user) {
+		if (err) console.log('ERR: Error searching for user ' + err);
+		if (user) {
+			output.username = user.username;
+			output.picture = user.picture;
+			res.send(output);
+		} else {
+			res.send(makeStatusObject(204));
+		}
+	});
+});
+
 router.get('/user/exists/:username', function (req, res) {
 	if (req.params.username === null) {
 		res.send(makeStatusObject(400));

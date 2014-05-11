@@ -29,7 +29,7 @@
       <div class="inner clearfix">
         <section id="main-content">
           <h1>
-<a name="rendezvous-api-endpoints" class="anchor" href="#rendezvous-api-endpoints"><span class="octicon octicon-link"></span></a>Rendezvous API Endpoints</h1>
+<a name="rendezvous-api-endpoints" class="anchor" href="#rendezvous-api-endpoints"><span class="octicon octicon-link"></span></a><a href="http://getrendezvous.co">Rendezvous</a> API Endpoints</h1>
 
 <p>This Wiki contains documentation for all Rendezvous REST API endpoints. All functioning endpoints are documented below. There is currently no limit on API calls per user.</p>
 
@@ -44,18 +44,18 @@
 
 <table>
 <thead><tr>
-<th>Endpoint</th>
-<th>Method</th>
-<th>Request Headers</th>
-<th>Response Codes</th>
-<th>Response Object Headers</th>
-<th>Security</th>
+<th align="left">Endpoint</th>
+<th align="center">Method</th>
+<th align="left">Request Headers</th>
+<th align="left">Response Codes</th>
+<th align="left">Response Object Headers</th>
+<th align="left">Security</th>
 </tr></thead>
 <tbody>
 <tr>
-<td><code>/user/new/</code></td>
-<td>POST</td>
-<td><ul>
+<td align="left"><code>/user/new/</code></td>
+<td align="center">POST</td>
+<td align="left"><ul>
 <li>
 <code>username</code> Username of the new user. Must be unique</li>
 <li>
@@ -71,7 +71,7 @@
 <li>
 <code>phone</code> Phone number of the new user</li>
 </ul></td>
-<td><ul>
+<td align="left"><ul>
 <li>
 <code>200</code> All OK. Returns new user object</li>
 <li>
@@ -79,7 +79,32 @@
 <li>
 <code>409</code> Duplicates detected in conflicting fields. User not added</li>
 </ul></td>
-<td><ul>
+<td align="left">Response code <code>200</code>
+</td>
+<td align="left">API key</td>
+</tr>
+<tr>
+<td align="left"><code>/user/new/</code></td>
+<td align="center">PUT</td>
+<td align="left"><ul>
+<li>
+<code>username</code> Username of the new user</li>
+<li>
+<code>code</code> Confirmation code of the new user</li>
+</ul></td>
+<td align="left"><ul>
+<li>
+<code>200</code> All OK. User object sent as response</li>
+<li>
+<code>204</code> User object not found. This would occur if this step is attempted before initializing the new user</li>
+<li>
+<code>400</code> Invalid request</li>
+<li>
+<code>401</code> Unauthorized. Confirmation codes did not match</li>
+<li>
+<code>409</code> Duplicate fields found. This occurs when another user has signed up before the current user has completed his/her authentication process</li>
+</ul></td>
+<td align="left"><ul>
 <li>
 <code>firstname</code> First name of the user</li>
 <li>
@@ -99,18 +124,18 @@
 <li>
 <code>current_status</code> Current status of the user</li>
 </ul></td>
-<td>API key</td>
+<td align="left">API key</td>
 </tr>
 <tr>
-<td><code>/user/login/</code></td>
-<td>POST</td>
-<td><ul>
+<td align="left"><code>/user/login/</code></td>
+<td align="center">POST</td>
+<td align="left"><ul>
 <li>
 <code>username</code> Username of the person to be logged on</li>
 <li>
 <code>password</code> Password of the user</li>
 </ul></td>
-<td><ul>
+<td align="left"><ul>
 <li>
 <code>200</code> All OK. Returns user object</li>
 <li>
@@ -120,7 +145,7 @@
 <li>
 <code>401</code> Unauthorized. Valid username, invalid password</li>
 </ul></td>
-<td><ul>
+<td align="left"><ul>
 <li>
 <code>firstname</code> First name of the user</li>
 <li>
@@ -140,7 +165,7 @@
 <li>
 <code>current_status</code> Current status of the user</li>
 </ul></td>
-<td>API key</td>
+<td align="left">API key</td>
 </tr>
 </tbody>
 </table><h2>

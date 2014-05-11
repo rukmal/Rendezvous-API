@@ -133,6 +133,27 @@
 <td align="left">API key</td>
 </tr>
 <tr>
+<td align="left"><code>/user/picture/</code></td>
+<td align="center">GET</td>
+<td align="left"><ul><li>
+<code>username</code> Username who's picture is to be retrieved</li></ul></td>
+<td align="left"><ul>
+<li>
+<code>200</code> All OK. Returns correct object</li>
+<li>
+<code>204</code> No user found corresponding to username. This could only occur if a search for a user picture is attempted before he/she registers</li>
+<li>
+<code>400</code> Invalid request</li>
+</ul></td>
+<td align="left"><ul>
+<li>
+<code>username</code> Username of the user who's picture is being returned</li>
+<li>
+<code>picture</code> URL to the user's picture</li>
+</ul></td>
+<td align="left">API key</td>
+</tr>
+<tr>
 <td align="left"><code>/user/exists/</code></td>
 <td align="center">GET</td>
 <td align="left"><ul><li>
@@ -293,6 +314,27 @@
 <li>
 <code>username</code> Username of the user</li>
 </ul></td>
+<td align="left">API key</td>
+</tr>
+<tr>
+<td align="left"><code>/user/invite/</code></td>
+<td align="center">POST</td>
+<td align="left"><ul>
+<li>
+<code>username</code> Username of the user making the request</li>
+<li>
+<code>target_phone</code> Target phone number of the person to be invited to the application</li>
+</ul></td>
+<td align="left"><ul>
+<li>
+<code>200</code> All OK. Request sent successfully</li>
+<li>
+<code>204</code> No user corresponding to the username found on the server</li>
+<li>
+<code>400</code> Invalid request</li>
+</ul></td>
+<td align="left"><ul><li>Response code <code>200</code>
+</li></ul></td>
 <td align="left">API key</td>
 </tr>
 </tbody>

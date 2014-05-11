@@ -51,7 +51,10 @@ router.route('/user/new/')
 			picture: req.body.picture,
 			username: req.body.username,
 			authCode: generateCode()
-		})
+		});
+		if (req.body.facebook_id) {
+			newUser.facebook_id = req.body.facebook_id;
+		}
 		// saving the user to the database
 		newUser.save(function (err) {
 			console.log(err);
@@ -94,6 +97,10 @@ router.route('/user/new/')
 				res.send(makeStatusObject(401));
 			}
 		});
+	})
+
+	.delete(function (req, res) {
+
 	});
 
 router.get('/user/exists/', function (req, res) {
@@ -166,8 +173,12 @@ function checkHeaders (expected, actual) {
 function generateCode () {
 	var length = 4;
 	var random = Math.random();
-	var code = random * Math.pow(10, length);
-	return Math.round(code);
+	var code = Math.round(random * Math.pow(10, length));
+	var stringCode = code + '';
+	while (stringCode.length < 4) {
+		stringCode = stringCode + ('' + Math.random() * 10);
+	}
+	return parseInt(stringCode);
 }
 
 /**

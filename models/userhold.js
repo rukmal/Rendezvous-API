@@ -25,6 +25,11 @@ var userHoldSchema = new mongoose.Schema({
 		required: true
 	},
 
+	facebook_id: {
+		type: String,
+		unique: true
+	},
+
 	username: {
 		type: String,
 		required: true,

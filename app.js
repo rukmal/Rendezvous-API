@@ -295,17 +295,20 @@ router.route('/status/new')
 			expiration_time: new Date(new Date().getTime() + offset),
 			created_by: req.body.username
 		});
-
 		newStatus.save(function (err) {
 			if (err) console.log('ERR: Error saving the new status ' + err);
 			if (err) {
 				res.send(makeStatusObject(409));
-			} else {
-				res.send(newStatus);
 			}
 		});
-
-		console.log(newStatus._id);
+		users.findOne({ username: req.body.username }, function (err, user) {
+			if (err) console.log('ERR: Error looking up user ' + err);
+			if (user.currentStatusID != null) {
+				user.pastStatuses.push(user.currentStatusID);
+			}
+			user.currentStatusID = newStatus._id;
+		});
+		res.send(newStatus);
 	});
 
 function getFriends (userObject, res) {

@@ -108,7 +108,7 @@ router.get('/user/exists/:username', function (req, res) {
 		res.send(makeStatusObject(400));
 	}
 	var candidateUser = req.params.username;
-	userhold.find({ username: candidateUser }, function (users, err) {
+	userhold.find({ username: candidateUser }, function (err, useres) {
 		if (err) console.log('ERR: Error searching for user based on username ' + err);
 		var output = {};
 		if (users > 0) {
@@ -125,7 +125,7 @@ router.get('/user/exists/fb/:fbid', function (req, res) {
 		res.send(makeStatusObject(400));
 	}
 	// Searching the database
-	users.findOne({ facebook_id: req.params.fbid }, function (user, err) {
+	users.findOne({ facebook_id: req.params.fbid }, function (err, user) {
 		if (err) console.log('ERR: Error searching for user based on Facebook ID ' + err);
 		if (user) {
 			res.send(user);

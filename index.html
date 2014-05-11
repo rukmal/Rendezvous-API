@@ -264,6 +264,37 @@
 </ul></td>
 <td align="left">API key</td>
 </tr>
+<tr>
+<td align="left"><code>/user/find_friends/</code></td>
+<td align="center">POST</td>
+<td align="left"><ul>
+<li>
+<code>number_list</code> Array of phone numbers to be searched for in the database</li>
+<li>
+<code>username</code> Current username of the user (for validation)</li>
+</ul></td>
+<td align="left"><ul>
+<li>
+<code>200</code> All OK. Returns JSON array of user objects corresponding to list of phone numbers</li>
+<li>
+<code>204</code> No user found that corresponds to the username. This would only be because the user has not yet registered with the application</li>
+<li>
+<code>400</code> Invalid request</li>
+<li>
+<code>500</code> Internal server error. Contact developer if this occurs</li>
+</ul></td>
+<td align="left"><ul>
+<li>
+<code>results</code> Array of user objects</li>
+<li>
+<code>first_name</code> First name of the user</li>
+<li>
+<code>last_name</code> Last name of the user</li>
+<li>
+<code>username</code> Username of the user</li>
+</ul></td>
+<td align="left">API key</td>
+</tr>
 </tbody>
 </table><h2>
 <a name="status-endpoint" class="anchor" href="#status-endpoint"><span class="octicon octicon-link"></span></a><code>/status</code> Endpoint</h2>
@@ -314,7 +345,7 @@
 <td align="left">API key</td>
 </tr></tbody>
 </table><h2>
-<a name="workflows" class="anchor" href="#workflows"><span class="octicon octicon-link"></span></a>Workflows</h2>
+<a name="commonn-workflows" class="anchor" href="#commonn-workflows"><span class="octicon octicon-link"></span></a>Commonn Workflows</h2>
 
 <h3>
 <a name="adding-a-new-user" class="anchor" href="#adding-a-new-user"><span class="octicon octicon-link"></span></a>Adding a new user</h3>
@@ -324,6 +355,11 @@
 <ul>
 <li>Send a POST request to the <code>/user/new/</code> endpoint with the required headers. This will then send a verification text message to the user.</li>
 <li>Prompt the user to enter the confirmation code sent via text, and send a PUT request to <code>/user/new/</code> with the required headers. This process will authenticate the confirmation code and add the new user to the database.</li>
+</ul><h3>
+<a name="adding-a-new-status" class="anchor" href="#adding-a-new-status"><span class="octicon octicon-link"></span></a>Adding a new Status</h3>
+
+<ul>
+<li>Send a POST request to the <code>/status/new</code> endpoint. This will then return a new status object, that can be displayed to the user. The server will automatically delete the status object if it is expired.</li>
 </ul>
       </section>
     </div>

@@ -9,8 +9,7 @@ var mongoose = require('mongoose');
 var statusSchema = new mongoose.Schema({
 	time: {
 		type: Date,
-		required: true,
-		default: Date.now
+		required: true
 	},
 
 	type: {
@@ -30,8 +29,7 @@ var statusSchema = new mongoose.Schema({
 
 	expiration_time: {
 		type: Date,
-		required: true,
-		default: Date.now // <-- Figure out a way to appenddate offset to this
+		required: true
 	},
 
 	isExpired: {

@@ -20,9 +20,6 @@ var users = require('./models/user');
 var userhold = require('./models/userhold');
 var status = require('./models/status');
 
-// Other data-related variables
-var defaultOffset = 600000; // ms (equal to 10 minutes)
-
 var app = express();
 
 // all environments
@@ -61,7 +58,7 @@ router.route('/user/new/')
 		}
 		// saving the user to the database
 		newUser.save(function (err) {
-			console.log(err);
+			console.log('ERR: Error saving the new user ' + err);
 			if (err) {
 				res.send(makeStatusObject(409));
 			} else {
@@ -80,13 +77,13 @@ router.route('/user/new/')
 		userhold.findOne({ username: req.body.username.toLowerCase() }, function (err, tempUser) {
 			if (err) console.log('ERR: Error searching for user ' + err);
 			// Comparing auth codes
-			if (tempUser.authCode === Number(req.body.code)) {
-				if (tempUser) {
+			if (tempUser) {
+				if (tempUser.authCode === Number(req.body.code)) {
 					delete tempUser.authCode;
 					// Moving the user from one database to the other
 					var permanentUser = new users(tempUser);
 					permanentUser.save(function (error) {
-						console.log(error);
+						console.log('ERR: Error saving the user permanently ' + error);
 						if (error) {
 							res.send(makeStatusObject(409));
 						} else {
@@ -95,10 +92,10 @@ router.route('/user/new/')
 					});
 				} else {
 					delete req.body;
-					res.send(makeStatusObject(204));
+					res.send(makeStatusObject(401));
 				}
 			} else {
-				res.send(makeStatusObject(401));
+				res.send(makeStatusObject(204));
 			}
 		});
 	})
@@ -168,6 +165,40 @@ router.route('/user/login')
 			} else {
 				delete req.body;
 				res.send(makeStatusObject(204));
+			}
+		});
+	});
+
+router.route('/status/new')
+	.post(function (req, res) {
+		expectedHeaders = ['username', 'type', 'location_lat', 'location_lon'];
+		if (!checkHeaders(expectedHeaders, req.body)) {
+			res.send(makeStatusObject(400));
+		}
+		// CHECK API KEY HERE
+		// Checking to see if the request contains an offset
+		var defaultOffset = 600000; // ms (equal to 10 minutes)
+		var offset = 0;
+		if (req.body.expiration_time) {
+			offset = req.body.expiration_time;
+		} else {
+			offset = defaultOffset;
+		}
+		// Creating new mognoose object
+		var newStatus = new status({
+			time: new Date(),
+			type: req.body.type,
+			location_lat: req.body.lat,
+			location_lon: req.body.lon,
+			expirtaion_time: new Date(new Date().getTime() + defaultOffset)
+		});
+
+		newStatus.save(function (err) {
+			if (err) console.log('ERR: Error saving the new status ' + err);
+			if (err) {
+				res.send(makeStatusObject(409));
+			} else {
+				res.send(newStatus);
 			}
 		});
 	});

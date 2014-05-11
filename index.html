@@ -225,6 +225,54 @@
 </tr>
 </tbody>
 </table><h2>
+<a name="status-endpoint" class="anchor" href="#status-endpoint"><span class="octicon octicon-link"></span></a><code>/status</code> Endpoint</h2>
+
+<table>
+<thead><tr>
+<th align="left">Endpoint</th>
+<th align="center">Method</th>
+<th align="left">Request Headers</th>
+<th align="left">Response Codes</th>
+<th align="left">Response Object Headers</th>
+<th align="left">Security</th>
+</tr></thead>
+<tbody><tr>
+<td align="left"><code>/status/new</code></td>
+<td align="center">POST</td>
+<td align="left"><ul>
+<li>
+<code>username</code> Username of the person whose status is to be set</li>
+<li>
+<code>type</code> Type of status (i.e. Movie, Chill etc.)</li>
+<li>
+<code>location_lat</code> Latitudinal location of the person at the time the post was made</li>
+<li>
+<code>location_lon</code> Longitudinal location of the person at the time the post was made</li>
+<li>
+<code>expiration_time</code> Expiration time of the post (OPTIONAL). If not set, this value falls back to the default</li>
+</ul></td>
+<td align="left"><ul>
+<li>
+<code>200</code> All OK. Returns status object with the following fields</li>
+<li>
+<code>400</code> Invalid request</li>
+<li>
+<code>409</code> Duplicates detected. The current status must either be deleted with a DELETE request, or updated with a PUT request. See other endpoints</li>
+</ul></td>
+<td align="left"><ul>
+<li>
+<code>time</code> Time the status object was created</li>
+<li>
+<code>type</code> Type of the status (i.e. Movie, chill etc.)</li>
+<li>`<code>location_lat</code> Latitude of the user when the status was created</li>
+<li>
+<code>location_lon</code> Longitude of the user when the statuswas created</li>
+<li>
+<code>expiration_time</code> Expiration time of the status</li>
+</ul></td>
+<td align="left">API key</td>
+</tr></tbody>
+</table><h2>
 <a name="workflows" class="anchor" href="#workflows"><span class="octicon octicon-link"></span></a>Workflows</h2>
 
 <h3>

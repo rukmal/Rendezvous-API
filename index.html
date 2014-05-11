@@ -1,43 +1,56 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
-
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
     <title>Rendezvous API by rukmal</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
   </head>
-
   <body>
-    <header>
-      <div class="inner">
-        <h1>Rendezvous API</h1>
-        <h2>The awesome API behind the even better Rendezvous.</h2>
-        <a href="https://github.com/rukmal/Rendezvous-API" class="button"><small>View project on</small>GitHub</a>
-      </div>
-    </header>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/rukmal/Rendezvous-API">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/rukmal/Rendezvous-API/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/rukmal/Rendezvous-API/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h1>
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Rendezvous API</h1>
+          <p>The awesome API behind the even better Rendezvous.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/rukmal">rukmal</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>
 <a name="rendezvous-api-endpoints" class="anchor" href="#rendezvous-api-endpoints"><span class="octicon octicon-link"></span></a><a href="http://getrendezvous.co">Rendezvous</a> API Endpoints</h1>
 
 <p>This Wiki contains documentation for all Rendezvous REST API endpoints. All functioning endpoints are documented below. There is currently no limit on API calls per user.</p>
 
 <p>Base URL: <a href="http://api.getrendezvous.co/">http://api.getrendezvous.co/</a></p>
 
-<p><strong>IMPORTANT: Most API calls require a valid API key. Contact system administrator for more information. API keys must be passed through with the header 'key', unless otherwise specified.</strong></p>
+<p><strong>IMPORTANT:</strong></p>
 
-<p><em>Note: For information about HTTP error codes, see the W3 guide <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">here</a>.</em></p>
+<ul>
+<li><strong>Most API calls require a valid API key. Contact system administrator for more information. API keys must be passed through with the header 'key', unless otherwise specified.</strong></li>
+<li><strong>All status codes are returned as a JSON object with a key 'status'</strong></li>
+</ul><p><em>Note: For information about HTTP error codes, see the W3 guide <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">here</a>.</em></p>
 
 <h2>
 <a name="user-endpoint" class="anchor" href="#user-endpoint"><span class="octicon octicon-link"></span></a><code>/user</code> Endpoint</h2>
@@ -64,8 +77,6 @@
 <code>firstname</code> First name of the new user</li>
 <li>
 <code>lastname</code> Last name of the new user</li>
-<li>
-<code>email</code> Email address of the new user</li>
 <li>
 <code>picture</code> URL to user picture. Can be blank, but the header is required</li>
 <li>
@@ -116,14 +127,23 @@
 <li>
 <code>phone</code> Phone number of the user</li>
 <li>
-<code>email</code> Email address of the user</li>
-<li>
 <code>picture</code> URL of the user picture</li>
 <li>
 <code>friends</code> Friend's user object of the current user</li>
 <li>
 <code>current_status</code> Current status of the user</li>
 </ul></td>
+<td align="left">API key</td>
+</tr>
+<tr>
+<td align="left"><code>/user/exists</code></td>
+<td align="center">GET</td>
+<td align="left"><ul><li>
+<code>username</code> Username to be checked for availability</li></ul></td>
+<td align="left"><ul><li>
+<code>200</code> All OK. Username is available.</li></ul></td>
+<td align="left"><ul><li>
+<code>availability</code> Boolean value. True if available, false if not</li></ul></td>
 <td align="left">API key</td>
 </tr>
 <tr>
@@ -157,8 +177,6 @@
 <li>
 <code>phone</code> Phone number of the user</li>
 <li>
-<code>email</code> Email address of the user</li>
-<li>
 <code>picture</code> URL of the user picture</li>
 <li>
 <code>friends</code> Friend's user object of the current user</li>
@@ -180,25 +198,10 @@
 <li>Send a POST request to the <code>/user/new/</code> endpoint with the required headers. This will then send a verification text message to the user.</li>
 <li>Prompt the user to enter the confirmation code sent via text, and send a PUT request to <code>/user/new/</code> with the required headers. This process will authenticate the confirmation code and add the new user to the database.</li>
 </ul>
-        </section>
+      </section>
 
-        <aside id="sidebar">
-          <a href="https://github.com/rukmal/Rendezvous-API/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/rukmal/Rendezvous-API/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
-
-          <p class="repo-owner"><a href="https://github.com/rukmal/Rendezvous-API"></a> is maintained by <a href="https://github.com/rukmal">rukmal</a>.</p>
-
-          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
     </div>
-
-  
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
   </body>
 </html>

@@ -120,7 +120,7 @@ router.get('/user/exists/:username', function (req, res) {
 		} else {
 			output['availability'] = true;
 		}
-		res.send(availability);
+		res.send(output);
 	});
 });
 

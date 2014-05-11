@@ -103,16 +103,15 @@ router.route('/user/new/')
 
 	});
 
-router.get('/user/exists/', function (req, res) {
-	var expectedHeaders = ['username'];
-	if (!checkHeaders(expectedHeaders, req.body)) {
+router.get('/user/exists/:username', function (req, res) {
+	if (req.params.username === null) {
 		res.send(makeStatusObject(400));
 	}
-	var candidateUser = req.body.username;
+	var candidateUser = req.params.username;
 	userhold.find({ username: candidateUser }, function (users, err) {
 		if (err) console.log('ERR: Error searching for user based on username ' + err);
 		var output = {};
-		if (users.length > 0) {
+		if (users > 0) {
 			output['availability'] = false;
 		} else {
 			output['availability'] = true;
@@ -121,13 +120,12 @@ router.get('/user/exists/', function (req, res) {
 	});
 });
 
-router.get('/user/exists/fb', function (req, res) {
-	var expectedHeaders = ['facebook_id'];
-	if (!checkHeaders(expectedHeaders, req.body)) {
+router.get('/user/exists/fb/:fbid', function (req, res) {
+	if (req.params.fbid === null) {
 		res.send(makeStatusObject(400));
 	}
 	// Searching the database
-	users.findOne({ facebook_id: req.body.facebook_id }, function (user, err) {
+	users.findOne({ facebook_id: req.params.fbid }, function (user, err) {
 		if (err) console.log('ERR: Error searching for user based on Facebook ID ' + err);
 		if (user) {
 			res.send(user);

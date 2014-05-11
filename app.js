@@ -311,41 +311,41 @@ router.route('/status/new')
 		res.send(newStatus);
 	});
 
-router.route('/status/friends')
-	.post(function (req, res) {
-		var expectedHeaders = ['username'];
-		if (!checkHeaders(expectedHeaders, req.body)) {
-			res.send(makeStatusObject(400));
-		}
-		users.findOne({ username: req.body.username }, function (err, user) {
-			if (err) console.log('ERR: Error searching for username ' + err);
-			if (!user) {
-				delete req.body;
-				res.send(makeStatusObject(204));
-			} else {
-				var output = {};
-				output.statuses = [];
-				for (friend in user.friends) {
-					users.findOne({ username: user.friends[friend] }, function (err, friend) {
-						if (err) console.log('ERR: Error searching for friend ' + err);
-						var friendStatus = {};
-						friendStatus.username = friend.username;
-						friendStatus.firstname = friend.firstname;
-						friendStatus.lastname = friend.lastname;
-						status.findOne({ _id: friend.currentStatusID }, function (err, friendStatus) {
-							if (friendStatus) {
-								friendStatus.status_time = friendStatus.time;
-								friendStatus.status_type = friendStatus.type;
-								friendStatus.status_expiration = friendStatus.expiration_time;
-								output.statuses.push(friendStatus);
-							}
-						});
+router.get('/status/friends', function (req, res) {
+	var expectedHeaders = ['username'];
+	if (!checkHeaders(expectedHeaders, req.body)) {
+		res.send(makeStatusObject(400));
+	}
+	users.findOne({ username: req.body.username }, function (err, user) {
+		if (err) console.log('ERR: Error searching for username ' + err);
+		if (!user) {
+			delete req.body;
+			res.send(makeStatusObject(204));
+		} else {
+			var output = {};
+			output.statuses = [];
+			for (friend in user.friends) {
+				users.findOne({ username: user.friends[friend] }, function (err, friend) {
+					if (err) console.log('ERR: Error searching for friend ' + err);
+					var friendStatus = {};
+					friendStatus.username = friend.username;
+					friendStatus.firstname = friend.firstname;
+					friendStatus.lastname = friend.lastname;
+					friendStatus.phone = friend.phone;
+					status.findOne({ _id: friend.currentStatusID }, function (err, friendStatus) {
+						if (friendStatus) {
+							friendStatus.status_time = friendStatus.time;
+							friendStatus.status_type = friendStatus.type;
+							friendStatus.status_expiration = friendStatus.expiration_time;
+							output.statuses.push(friendStatus);
+						}
 					});
-				}
-				res.send(output);
+				});
 			}
-		});
+			res.send(output);
+		}
 	});
+});
 
 /**
  * Function to get the friends of a specific user

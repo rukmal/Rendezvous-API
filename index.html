@@ -317,6 +317,35 @@
 <td align="left">API key</td>
 </tr>
 <tr>
+<td align="left"><code>/user/get_friend_list</code></td>
+<td align="center">POST</td>
+<td align="left"><ul><li>
+<code>username</code> Username of the user who's friends are to be returned</li></ul></td>
+<td align="left"><ul>
+<li>
+<code>200</code> All OK. Response sent succesfully</li>
+<li>
+<code>204</code> No user found that corresponds to the username</li>
+<li>
+<code>400</code> Invalid request</li>
+</ul></td>
+<td align="left"><ul>
+<li>
+<code>friends</code> JSON array of user objects containing the friends' details</li>
+<li>
+<code>firstname</code> First name of all of the friend</li>
+<li>
+<code>lastname</code> Last name of the friend</li>
+<li>
+<code>username</code> Username of the friend</li>
+<li>
+<code>picture</code> Picture URL of the friend</li>
+<li>
+<code>current_status</code> Current status of the friend</li>
+</ul></td>
+<td align="left">API key</td>
+</tr>
+<tr>
 <td align="left"><code>/user/invite/</code></td>
 <td align="center">POST</td>
 <td align="left"><ul>
@@ -327,7 +356,7 @@
 </ul></td>
 <td align="left"><ul>
 <li>
-<code>200</code> All OK. Request sent successfully</li>
+<code>200</code> All OK. Response sent successfully</li>
 <li>
 <code>204</code> No user corresponding to the username found on the server</li>
 <li>

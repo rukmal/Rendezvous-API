@@ -270,6 +270,35 @@ router.route('/user/invite')
 		res.send(makeStatusObject(200));
 	});
 
+router.route('/user/get_friend_list')
+	.post(function (req, res) {
+		var expectedHeaders = ['username'];
+		if (!checkHeaders(expectedHeaders, req.body)) {
+			res.send(makeStatusObject(400));
+		}
+		users.findOne({ username: req.body.username }, function (err, user) {
+			if (err) console.log('ERR: Error searching for user ' + err);
+			if (user) {
+				var friendIDs = user.friends;
+				var friends = [];
+				for (id in friendIDs) {
+					users.findOne({ username: friendIDs[id] }, function (err, friend) {
+						if (err) console.log('ERR: Error searching for friend ' + err);
+						delete friend.password;
+						delete friend.phone;
+						delete friend.account_status;
+						delete friend.friends;
+						delete friends.pastStatuses;
+						friends.push(friend);
+					});
+					res.send(friends);
+				}
+			} else {
+				res.send(makeStatusObject(204));
+			}
+		});
+	});
+
 router.route('/status/new')
 	.post(function (req, res) {
 		expectedHeaders = ['username', 'type', 'location_lat', 'location_lon'];

@@ -1,6 +1,7 @@
-
 /**
- * Module dependencies.
+ * @author Rukmal Weerawarana
+ *
+ * @description API functions for the Rendezvous App
  */
 
 var express = require('express');

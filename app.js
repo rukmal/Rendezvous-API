@@ -288,7 +288,9 @@ router.route('/user/get_friend_list')
 						delete friend.phone;
 						delete friend.account_status;
 						delete friend.friends;
-						delete friends.pastStatuses;
+						delete friend.pastStatuses;
+						friend.current_status = getStatus(friend.currentStatusID);
+						delete friend.currentStatusID;
 						friends.push(friend);
 					});
 					res.send(friends);
@@ -464,6 +466,18 @@ function makeStatusObject(statusCode) {
 	}
 	console.log('RESPONSE CODE: ' + statusCode);
 	return statusObject;
+}
+
+/**
+ * Function to get a status, given a status ID
+ * @param  {String} statusID Specific MongoDB ID of the status
+ * @return {JSON}          Status object
+ */
+function getStatus (statusID) {
+	status.findOne({ _id: statusID }, function (err, userstatus) {
+		if (err) console.log('ERR: Error searching for status ' + err);
+		return userstatus;
+	})
 }
 
 app.use('/', router)

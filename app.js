@@ -302,6 +302,27 @@ router.route('/user/get_friend_list')
 		});
 	});
 
+router.route('/user/search_friends')
+	.post(function (req, res) {
+		var expectedHeaders = ['search_username'];
+		if (!checkHeaders(expectedHeaders, req.body)) {
+			res.send(makeStatusObject(400));
+		}
+		users.find({ username: req.body.search_username }, function (err, searchresults) {
+			for (user in searchresults) {
+				delete searchresults[user].password;
+				delete searchresults[user].facebook_id;
+				delete searchresults[user].account_status;
+				delete searchresults[user].friends;
+				searchresults[user].current_status = getStatus(searchresults[user].currentStatusID);
+				delete searchresults[user].pastStatuses;
+				delete searchresults[user].phone;
+				delete searchresults[user].currentStatusID;
+			}
+			res.send(searchresults);
+		});
+	});
+
 router.route('/status/new')
 	.post(function (req, res) {
 		expectedHeaders = ['username', 'type', 'location_lat', 'location_lon'];
@@ -461,7 +482,7 @@ function sendText (toNumber, body) {
  * @param  {Number} statusCode HTTP status code to be objectified
  * @return {JSON}            JSON object with key 'status' containing the error code.
  */
-function makeStatusObject(statusCode) {
+function makeStatusObject (statusCode) {
 	var statusObject = {
 		status: statusCode
 	}

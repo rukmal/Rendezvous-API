@@ -286,6 +286,21 @@
 <td align="left">API key</td>
 </tr>
 <tr>
+<td align="left"><code>/user/search_friends/</code></td>
+<td align="center">POST</td>
+<td align="left"><ul><li>
+<code>search_username</code> Term to be searched for</li></ul></td>
+<td align="left"><ul>
+<li>
+<code>200</code> All OK. Correct object returned</li>
+<li>
+<code>400</code> Invalid request</li>
+</ul></td>
+<td align="left">
+<code>results</code> JSON array of results<code>username</code> Username of the search result<code>firstname</code> First name of the user<code>lastname</code> Last name of the search result<code>picture</code> Picture url of the user<code>current_status</code> Current status of the search result</td>
+<td align="left">API key</td>
+</tr>
+<tr>
 <td align="left"><code>/user/find_friends/</code></td>
 <td align="center">POST</td>
 <td align="left"><ul>
